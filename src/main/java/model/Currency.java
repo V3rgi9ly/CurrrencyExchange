@@ -6,13 +6,23 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-@Getter
-@Setter
-@AllArgsConstructor
+import lombok.Data;
+
+
 public class Currency {
-    private final int id;
-    private final String code;
-    private final String fullname;
-    private final String sign;
+    private  int id;
+    private  String code;
+    private  String fullname;
+    private  String sign;
+
+    public Currency() {
+
+    }
+    public Currency(int id, String code, String fullname, String sign) {
+        this.id = id;
+        this.code = code;
+        this.fullname = fullname;
+        this.sign = sign;
+    }
 
 }
