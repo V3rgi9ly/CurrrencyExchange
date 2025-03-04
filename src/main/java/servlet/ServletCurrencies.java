@@ -11,6 +11,8 @@ import java.io.IOException;
 @WebServlet("/currencies")
 public class ServletCurrencies extends HttpServlet {
 
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
