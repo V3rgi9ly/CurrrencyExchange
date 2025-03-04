@@ -12,16 +12,24 @@ import java.util.List;
 
 public class CurrenciesDAO {
 
-    public List<Currency> searchCurrency() throws SQLException {
-        Currency currency = null;
-        Connection connection= DbConnect.getConnection();
-        List<Currency> currencies= new ArrayList<Currency>();
-        String sql="select * from currencies";
+    public List<model.Currency> searchCurrency() throws SQLException {
 
-        Statement statement=connection.createStatement();
+        Connection connection = DbConnect.getConnection();
+        List<model.Currency> currencies = new ArrayList<model.Currency>();
+        String sql = "select * from currencies";
 
-        ResultSet resultSet=statement.executeQuery(sql);
+        Statement statement = connection.createStatement();
 
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        while (resultSet.next()) {
+            currencies.add(new model.Currency(resultSet.getInt("id"),
+                    resultSet.getString("code"),
+                    resultSet.getString("fullname"),
+                    resultSet.getString("sign")));
+        }
+
+        return currencies;
 
     }
 }
