@@ -16,14 +16,16 @@ import Service.CurrenciesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.CurrenciesDTO;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-
+@NoArgsConstructor
 @WebServlet("/currencies")
 public class ServletCurrencies extends HttpServlet {
 
     private Gson gson = new Gson();
-    private final CurrenciesService currenciesService = new CurrenciesService();
-    private  List<CurrenciesDTO> currenciesDTO = new ArrayList<CurrenciesDTO>();
+    private  CurrenciesService currenciesService= new CurrenciesService();
+    private  List<CurrenciesDTO> currenciesDTO = new ArrayList<>();
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,8 +41,9 @@ public class ServletCurrencies extends HttpServlet {
 
         }catch (SQLException e){
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-
 
 
     }

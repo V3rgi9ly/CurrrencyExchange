@@ -7,26 +7,28 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Currency;
+import model.Currency;
 import java.util.List;
 
 public class CurrenciesDAO {
 
-    public List<model.Currency> searchCurrency() throws SQLException {
+    public List<Currency> searchCurrency() throws SQLException, ClassNotFoundException {
 
         Connection connection = DbConnect.getConnection();
-        List<model.Currency> currencies = new ArrayList<model.Currency>();
-        String sql = "select * from currencies";
+        List<Currency> currencies = new ArrayList<>();
+        String sql = "select * from Currencies";
+        Currency currency = new Currency();
 
         Statement statement = connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
-            currencies.add(new model.Currency(resultSet.getInt("id"),
-                    resultSet.getString("code"),
-                    resultSet.getString("fullname"),
-                    resultSet.getString("sign")));
+            currency.setid(resultSet.getInt("id"));
+            currency.setcode(resultSet.getString("code"));
+            currency.setfullname(resultSet.getString("fullname"));
+            currency.setsign(resultSet.getString("sign"));
+            currencies.add(currency);
         }
 
         return currencies;

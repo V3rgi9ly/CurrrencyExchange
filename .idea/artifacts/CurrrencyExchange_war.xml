@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="CurrrencyExchange:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/CurrrencyExchange_war</output-path>
+    <root id="archive" name="CurrrencyExchange_war.war">
+      <element id="artifact" artifact-name="CurrrencyExchange:war exploded" />
+    </root>
+  </artifact>
+</component>

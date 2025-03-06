@@ -1,17 +1,16 @@
 package model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ExchangeRates {
-    private final int id;
-    private final int BaseCurrencyid;
-    private final int targetCurrencyid;
-    private final BigDecimal rate;
+    private  int id;
+    private  int BaseCurrencyid;
+    private  int targetCurrencyid;
+    private  BigDecimal rate;
 }

@@ -1,13 +1,17 @@
 package dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CurrenciesDTO {
-    int id;
-    String name;
-    String code;
-    String sign;
+    private int id;
+    private String code;
+    private String fullname;
+    private String sign;
 }
