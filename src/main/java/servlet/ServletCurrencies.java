@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class ServletCurrencies extends HttpServlet {
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private CurrenciesService currenciesService=CurrenciesService.getInstance();
+    private final CurrenciesService currenciesService=CurrenciesService.getInstance();
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {

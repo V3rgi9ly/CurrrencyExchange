@@ -30,7 +30,6 @@ public class CurrenciesDAO {
             currency.setFullname(resultSet.getString("fullname"));
             currency.setSign(resultSet.getString("sign"));
             currencies.add(currency);
-
         }
 
         return currencies;
