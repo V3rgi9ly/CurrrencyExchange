@@ -18,7 +18,6 @@ public class CurrenciesDAO {
         List<Currency> currencies = new ArrayList<>();
         String sql = "select * from Currencies";
 
-
         Statement statement = connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery(sql);
