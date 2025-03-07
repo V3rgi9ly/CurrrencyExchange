@@ -16,22 +16,25 @@ import Service.CurrenciesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.CurrenciesDTO;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
+
+
 @NoArgsConstructor
+@AllArgsConstructor
 @WebServlet("/currencies")
 public class ServletCurrencies extends HttpServlet {
 
     private Gson gson = new Gson();
-    private  CurrenciesService currenciesService= new CurrenciesService();
-    private  List<CurrenciesDTO> currenciesDTO = new ArrayList<>();
+    private CurrenciesService currenciesService=CurrenciesService.getInstance();
 
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
 
         try {
-            currenciesDTO=currenciesService.getCurrencies();
+            List<CurrenciesDTO> currenciesDTO = currenciesService.getCurrencies();
             String employeeJsonString = this.gson.toJson(currenciesDTO);
             PrintWriter out = response.getWriter();
             response.setContentType("application/json");

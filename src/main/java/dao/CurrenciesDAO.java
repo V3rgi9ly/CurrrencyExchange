@@ -24,11 +24,12 @@ public class CurrenciesDAO {
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
-            currency.setid(resultSet.getInt("id"));
-            currency.setcode(resultSet.getString("code"));
-            currency.setfullname(resultSet.getString("fullname"));
-            currency.setsign(resultSet.getString("sign"));
+            currency.setId(resultSet.getInt("id"));
+            currency.setCode(resultSet.getString("code"));
+            currency.setFullname(resultSet.getString("fullname"));
+            currency.setSign(resultSet.getString("sign"));
             currencies.add(currency);
+            resultSet.close();
         }
 
         return currencies;

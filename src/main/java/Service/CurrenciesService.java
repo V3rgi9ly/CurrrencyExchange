@@ -15,17 +15,22 @@ import model.Currency;
 import java.util.List;
 
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class CurrenciesService {
 
-    private  CurrenciesDAO currenciesDAO=new CurrenciesDAO();
+    private static CurrenciesService instance;
+    private final CurrenciesDAO currenciesDAO=new CurrenciesDAO();
     private final CurrenciesMapper mapper = CurrenciesMapper.INSTANCE;
 
+    public static CurrenciesService getInstance() {
+        if (instance == null) {
+            instance=new CurrenciesService();
+        }
+        return instance;
+    }
 
     public List<CurrenciesDTO> getCurrencies() throws SQLException, ClassNotFoundException {
 
         List<Currency> currency = currenciesDAO.searchCurrency();
-
 
         return mapper.currenciesDTOList(currency);
     }
