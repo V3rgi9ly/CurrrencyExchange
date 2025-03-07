@@ -3,8 +3,7 @@ package dto;
 import lombok.*;
 
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public final class CurrenciesDTO {
     private int id;
     private String code;
