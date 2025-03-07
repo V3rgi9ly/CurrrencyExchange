@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @WebServlet("/currencies")
 public class ServletCurrencies extends HttpServlet {
 
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private CurrenciesService currenciesService=CurrenciesService.getInstance();
 
 

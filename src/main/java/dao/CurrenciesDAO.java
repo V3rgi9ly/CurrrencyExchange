@@ -17,19 +17,20 @@ public class CurrenciesDAO {
         Connection connection = DbConnect.getConnection();
         List<Currency> currencies = new ArrayList<>();
         String sql = "select * from Currencies";
-        Currency currency = new Currency();
+
 
         Statement statement = connection.createStatement();
 
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
+            Currency currency = new Currency();
             currency.setId(resultSet.getInt("id"));
             currency.setCode(resultSet.getString("code"));
             currency.setFullname(resultSet.getString("fullname"));
             currency.setSign(resultSet.getString("sign"));
             currencies.add(currency);
-            resultSet.close();
+
         }
 
         return currencies;
