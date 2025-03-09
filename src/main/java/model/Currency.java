@@ -3,9 +3,11 @@ package model;
 
 
 
-import lombok.Data;
+import lombok.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Currency {
     private int id;
     private String code;

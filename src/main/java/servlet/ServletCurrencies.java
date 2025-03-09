@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import Service.CurrenciesService;
@@ -18,8 +17,6 @@ import com.google.gson.GsonBuilder;
 import dto.CurrenciesDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 
 
 @NoArgsConstructor
@@ -32,22 +29,12 @@ public class ServletCurrencies extends HttpServlet {
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
-
-        try {
-            List<CurrenciesDTO> currenciesDTO = currenciesService.getCurrencies();
+            List<CurrenciesDTO> currenciesDTO = currenciesService.findAll();
             String employeeJsonString = this.gson.toJson(currenciesDTO);
             PrintWriter out = response.getWriter();
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             out.print(employeeJsonString);
             out.flush();
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-
     }
 }

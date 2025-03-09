@@ -1,6 +1,6 @@
 package dao;
 
-import utils.DbConnect;
+import Config.DbConnect;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
