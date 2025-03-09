@@ -32,8 +32,15 @@ public class ServletCurrency extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String[] requestURI = request.getPathInfo().split("/");
         String code=requestURI[1];
+        if (code.length()<=2 || code.length()>3) {
+            throw new ServletException("Invalid request path");
+        }
         PrintWriter out = response.getWriter();
         CurrenciesDTO currenciesDTO = currencyService.find(code);
+        if (currenciesDTO == null) {
+            throw new ServletException("Currency not found");
+        }
+
         String employeeJsonString = this.gson.toJson(currenciesDTO);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
