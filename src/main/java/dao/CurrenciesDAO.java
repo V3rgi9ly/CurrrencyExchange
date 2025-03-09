@@ -7,15 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import model.Currency;
+import model.Currencies;
 import java.util.List;
 
 public class CurrenciesDAO {
 
-    public List<Currency> searchCurrency() throws SQLException, ClassNotFoundException {
+    public List<Currencies> findAll() throws SQLException, ClassNotFoundException {
 
         Connection connection = DbConnect.getConnection();
-        List<Currency> currencies = new ArrayList<>();
+        List<Currencies> currencies = new ArrayList<>();
         String sql = "select * from Currencies";
 
         Statement statement = connection.createStatement();
@@ -23,7 +23,7 @@ public class CurrenciesDAO {
         ResultSet resultSet = statement.executeQuery(sql);
 
         while (resultSet.next()) {
-            Currency currency = new Currency();
+            Currencies currency = new Currencies();
             currency.setId(resultSet.getInt("id"));
             currency.setCode(resultSet.getString("code"));
             currency.setFullname(resultSet.getString("fullname"));

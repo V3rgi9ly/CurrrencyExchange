@@ -2,33 +2,31 @@ package Service;
 
 import Config.CurrenciesMapper;
 import dao.CurrenciesDAO;
+import dao.CurrencyDAO;
 import dto.CurrenciesDTO;
-
-
-import java.sql.SQLException;
-
 import model.Currencies;
 
+import java.sql.SQLException;
+import java.util.Currency;
 import java.util.List;
 
+public class CurrencyService {
 
-public class CurrenciesService {
-
-    private static CurrenciesService instance;
-    private final CurrenciesDAO currenciesDAO = new CurrenciesDAO();
+    private static CurrencyService instance;
+    private final CurrencyDAO currenciesDAO = new CurrencyDAO();
     private final CurrenciesMapper mapper = CurrenciesMapper.INSTANCE;
 
-    public static CurrenciesService getInstance() {
+    public static CurrencyService getInstance() {
         if (instance == null) {
-            instance = new CurrenciesService();
+            instance = new CurrencyService();
         }
         return instance;
     }
 
-    public List<CurrenciesDTO> findAll() {
+    public CurrenciesDTO find(String code) {
         try {
-            List<Currencies> currency = currenciesDAO.findAll();
-            return mapper.currenciesDTOList(currency);
+            Currencies currency = currenciesDAO.find(code);
+            return mapper.toDTO(currency);
         } catch (SQLException e){
             throw new RuntimeException();
         } catch (ClassNotFoundException e) {

@@ -8,7 +8,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Currency {
+public class Currencies {
     private int id;
     private String code;
     private String fullname;
@@ -16,3 +16,4 @@ public class Currency {
 
 
 }
+

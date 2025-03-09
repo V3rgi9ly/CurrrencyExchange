@@ -1,14 +1,14 @@
 package dao;
 
-import model.Currency;
+import model.Currencies;
 
 import java.util.List;
 
 public interface CrudCurrencies {
-    void Create(Currency currency);
-    void Update(Currency currency);
-    void Read(Currency currency);
-    List<Currency> GetAllCurrencies();
+    void Create(Currencies currency);
+    void Update(Currencies currency);
+    void Read(Currencies currency);
+    List<Currencies> GetAllCurrencies();
 
 
 }
