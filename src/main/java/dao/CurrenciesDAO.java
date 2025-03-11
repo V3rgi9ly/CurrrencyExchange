@@ -50,6 +50,10 @@ public class CurrenciesDAO implements CrudCurrencies{
 
     }
 
+    public boolean findCode(String code) {
+        if ()
+    }
+
     @Override
     public Currencies findByCode(String currencyCode)  {
         try {

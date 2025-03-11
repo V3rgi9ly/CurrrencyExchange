@@ -7,6 +7,7 @@ import dto.CurrenciesDTO;
 
 import java.sql.SQLException;
 
+import dto.UserAddCurrencyDTO;
 import lombok.Getter;
 import model.Currencies;
 
@@ -33,5 +34,9 @@ public class CurrenciesService {
     public CurrenciesDTO findByCode(String code) {
         Currencies currency = currenciesDAO.findByCode(code);
         return mapper.toDTO(currency);
+    }
+
+    public void save(UserAddCurrencyDTO userAddCurrencyDTO) {
+
     }
 }
