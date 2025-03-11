@@ -8,18 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
 
 import Service.CurrenciesService;
-import Service.CurrencyService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.CurrenciesDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
-import static java.lang.System.out;
 
 
 @NoArgsConstructor
@@ -27,7 +22,7 @@ import static java.lang.System.out;
 @WebServlet("/currencies/*")
 public class ServletCurrency extends HttpServlet {
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private final CurrencyService currencyService = CurrencyService.getInstance();
+    private final CurrenciesService currencyService = CurrenciesService.getInstance();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String[] requestURI = request.getPathInfo().split("/");
@@ -36,7 +31,7 @@ public class ServletCurrency extends HttpServlet {
             throw new ServletException("Invalid request path");
         }
         PrintWriter out = response.getWriter();
-        CurrenciesDTO currenciesDTO = currencyService.find(code);
+        CurrenciesDTO currenciesDTO = currencyService.findByCode(code);
         if (currenciesDTO == null) {
             throw new ServletException("Currency not found");
         }

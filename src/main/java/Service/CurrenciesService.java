@@ -7,6 +7,7 @@ import dto.CurrenciesDTO;
 
 import java.sql.SQLException;
 
+import lombok.Getter;
 import model.Currencies;
 
 import java.util.List;
@@ -14,25 +15,23 @@ import java.util.List;
 
 public class CurrenciesService {
 
-    private static CurrenciesService instance;
-    private final CurrenciesDAO currenciesDAO = new CurrenciesDAO();
+    @Getter
+    private static CurrenciesService instance=new CurrenciesService();
+
+    private final CurrenciesDAO currenciesDAO;
     private final CurrenciesMapper mapper = CurrenciesMapper.INSTANCE;
 
-    public static CurrenciesService getInstance() {
-        if (instance == null) {
-            instance = new CurrenciesService();
-        }
-        return instance;
+    private CurrenciesService() {
+        currenciesDAO=CurrenciesDAO.getInstance();
     }
 
     public List<CurrenciesDTO> findAll() {
-        try {
-            List<Currencies> currency = currenciesDAO.findAll();
-            return mapper.currenciesDTOList(currency);
-        } catch (SQLException e){
-            throw new RuntimeException();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException();
-        }
+        List<Currencies> currency = currenciesDAO.findAll();
+        return mapper.currenciesDTOList(currency);
+    }
+
+    public CurrenciesDTO findByCode(String code) {
+        Currencies currency = currenciesDAO.findByCode(code);
+        return mapper.toDTO(currency);
     }
 }

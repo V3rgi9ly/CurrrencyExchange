@@ -1,37 +1,77 @@
 package dao;
 
-import Config.DbConnect;
+import Config.DBConnect;
+import Config.DBRequestSQL;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.util.ArrayList;
+
+import lombok.Getter;
 import model.Currencies;
+
+import javax.swing.*;
 import java.util.List;
+import java.util.PrimitiveIterator;
 
-public class CurrenciesDAO {
+public class CurrenciesDAO implements CrudCurrencies{
 
-    public List<Currencies> findAll() throws SQLException, ClassNotFoundException {
+    @Getter
+    private static final CurrenciesDAO instance=new CurrenciesDAO();
 
-        Connection connection = DbConnect.getConnection();
-        List<Currencies> currencies = new ArrayList<>();
-        String sql = "select * from Currencies";
+    private final DBConnect dbConnect;
+    private final DBRequestSQL dbRequestSQL;
 
-        Statement statement = connection.createStatement();
+    private CurrenciesDAO() {
+        this.dbConnect = DBConnect.getIntstance();
+        this.dbRequestSQL = DBRequestSQL.getInstance();
+    }
 
-        ResultSet resultSet = statement.executeQuery(sql);
+    @Override
+    public List<Currencies> findAll() {
+        try {
+            ResultSet resultSet = dbConnect.connection(dbRequestSQL.requestGetAllCurrencies);
+            List<Currencies> currencies = new ArrayList<>();
 
-        while (resultSet.next()) {
-            Currencies currency = new Currencies();
-            currency.setId(resultSet.getInt("id"));
-            currency.setCode(resultSet.getString("code"));
-            currency.setFullname(resultSet.getString("fullname"));
-            currency.setSign(resultSet.getString("sign"));
-            currencies.add(currency);
+            while (resultSet.next()) {
+                Currencies currency = new Currencies();
+                currency.setId(resultSet.getInt("id"));
+                currency.setCode(resultSet.getString("code"));
+                currency.setFullname(resultSet.getString("fullname"));
+                currency.setSign(resultSet.getString("sign"));
+                currencies.add(currency);
+            }
+
+            return currencies;
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-        return currencies;
+    }
 
+    @Override
+    public Currencies findByCode(String currencyCode)  {
+        try {
+            ResultSet resultSet = dbConnect.connection(dbRequestSQL.requestGetCurrency, currencyCode.toUpperCase());
+            Currencies currencies = new Currencies();
+
+            while (resultSet.next()) {
+                currencies.setId(resultSet.getInt("id"));
+                currencies.setCode(resultSet.getString("code"));
+                currencies.setFullname(resultSet.getString("fullname"));
+                currencies.setSign(resultSet.getString("sign"));
+            }
+
+            return currencies;
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void save(String code, String fullname, String sign)  {
+        dbConnect.connection(dbRequestSQL.requestaAddNewCurrency, code, fullname, sign);
     }
 }

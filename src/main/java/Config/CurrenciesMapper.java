@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 import model.Currencies;
 import java.util.List;
 
-@Mapper()
+@Mapper
 public interface CurrenciesMapper {
 
     CurrenciesMapper INSTANCE= Mappers.getMapper(CurrenciesMapper.class);
