@@ -10,7 +10,7 @@ public class DBRequestSQL {
     }
 
     public final String requestGetAllCurrencies="select * from Currencies";
-    public final String requestGetCurrency="select * from currencies where code=?";
-    public final String requestaAddNewCurrency="INSERT INTO currencies values (?,?,?)";
+    public final String requestGetCurrency="select * from Currencies where code=?";
+    public final String requestaAddNewCurrency="INSERT INTO Currencies (code, fullname, sign) values (?,?,?)";
 
 }

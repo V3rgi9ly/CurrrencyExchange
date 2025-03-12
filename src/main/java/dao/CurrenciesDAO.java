@@ -7,6 +7,7 @@ import Config.DBRequestSQL;
 import java.sql.*;
 import java.util.ArrayList;
 
+import dto.CurrenciesDTO;
 import lombok.Getter;
 import model.Currencies;
 
@@ -18,6 +19,7 @@ public class CurrenciesDAO implements CrudCurrencies{
 
     @Getter
     private static final CurrenciesDAO instance=new CurrenciesDAO();
+
 
     private final DBConnect dbConnect;
     private final DBRequestSQL dbRequestSQL;
@@ -50,9 +52,7 @@ public class CurrenciesDAO implements CrudCurrencies{
 
     }
 
-    public boolean findCode(String code) {
-        if ()
-    }
+
 
     @Override
     public Currencies findByCode(String currencyCode)  {
@@ -78,4 +78,6 @@ public class CurrenciesDAO implements CrudCurrencies{
     public void save(String code, String fullname, String sign)  {
         dbConnect.connection(dbRequestSQL.requestaAddNewCurrency, code, fullname, sign);
     }
+
+
 }

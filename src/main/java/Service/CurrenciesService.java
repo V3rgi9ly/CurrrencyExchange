@@ -37,6 +37,14 @@ public class CurrenciesService {
     }
 
     public void save(UserAddCurrencyDTO userAddCurrencyDTO) {
+        currenciesDAO.save(userAddCurrencyDTO.getCode(), userAddCurrencyDTO.getFullname(), userAddCurrencyDTO.getSign() );
+    }
 
+    public boolean findCode(String code) {
+
+        if (currenciesDAO.findByCode(code) != null) {
+            return true;
+        }
+       return false;
     }
 }

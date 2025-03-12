@@ -50,7 +50,10 @@ public class ServletCurrencies extends HttpServlet {
         String fullName = request.getParameter("fullName");
         String sign = request.getParameter("sign");
 
-        List<String> element=new ArrayList<>(Arrays.asList(code,fullName,sign));
+        List<String> element=new ArrayList<>();
+        element.add(code);
+        element.add(fullName);
+        element.add(sign);
         for (String s : element) {
             if(s==null || s.isEmpty()){
                 throw new RuntimeException("params equals null or empty");
@@ -61,7 +64,7 @@ public class ServletCurrencies extends HttpServlet {
             throw new RuntimeException("params not equals");
         }
 
-        if (currenciesDAO.findCode(code)){
+        if (currenciesService.findCode(code)){
             throw new RuntimeException("code already exists");
         }
 

@@ -18,6 +18,7 @@ public class DBConnect {
 
         try {
             Class.forName("org.sqlite.JDBC");
+
             Connection connection= DriverManager.getConnection(dbBaseConfig.databaseURI,dbBaseConfig.username, dbBaseConfig.password);
             PreparedStatement preparedStatement=connection.prepareStatement(requestSQL);
 
@@ -25,14 +26,24 @@ public class DBConnect {
                 preparedStatement.setObject(i+1, params[i]);
             }
 
-            ResultSet resultSet=preparedStatement.executeQuery();
+            ResultSet resultSet=null;
+            if (requestSQL.trim().toUpperCase().startsWith("SELECT")
+                    || requestSQL.trim().toUpperCase().startsWith("WITH")) {
+                resultSet = preparedStatement.executeQuery();
+
+
+            } else {
+                preparedStatement.executeUpdate();
+                connection.close();
+            }
+
             return resultSet;
         }
         catch (SQLException e) {
-            throw new RuntimeException("Error in connection",e);
+            throw new RuntimeException("Error in connection");
         }
         catch (ClassNotFoundException e) {
-            throw new RuntimeException("Error-ClassNotFound",e);
+            throw new RuntimeException("Error-ClassNotFound");
         }
 
 
