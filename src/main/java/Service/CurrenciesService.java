@@ -37,7 +37,7 @@ public class CurrenciesService {
     }
 
     public void save(UserAddCurrencyDTO userAddCurrencyDTO) {
-        currenciesDAO.save(userAddCurrencyDTO.getCode(), userAddCurrencyDTO.getFullname(), userAddCurrencyDTO.getSign() );
+        currenciesDAO.save(userAddCurrencyDTO);
     }
 
     public boolean findCode(String code) {

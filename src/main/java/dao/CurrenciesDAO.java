@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import dto.CurrenciesDTO;
+import dto.UserAddCurrencyDTO;
 import lombok.Getter;
 import model.Currencies;
 
@@ -15,7 +16,7 @@ import javax.swing.*;
 import java.util.List;
 import java.util.PrimitiveIterator;
 
-public class CurrenciesDAO implements CrudCurrencies{
+public class CurrenciesDAO implements CrudCurrencies<Currencies, UserAddCurrencyDTO>{
 
     @Getter
     private static final CurrenciesDAO instance=new CurrenciesDAO();
@@ -75,8 +76,8 @@ public class CurrenciesDAO implements CrudCurrencies{
     }
 
     @Override
-    public void save(String code, String fullname, String sign)  {
-        dbConnect.connection(dbRequestSQL.requestaAddNewCurrency, code, fullname, sign);
+    public void save(UserAddCurrencyDTO currenciesDTO)  {
+        dbConnect.connection(dbRequestSQL.requestaAddNewCurrency, currenciesDTO);
     }
 
 

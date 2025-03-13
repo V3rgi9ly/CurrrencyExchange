@@ -4,9 +4,9 @@ import model.Currencies;
 
 import java.util.List;
 
-public interface CrudCurrencies<T> {
+public interface CrudCurrencies<T, K> {
     List<T> findAll();
-    T findByCode(String currencyCode);
-    void save(String code, String fullname, String sign);
+    T findByCode(String code1);
+    void save(K entity);
 
 }

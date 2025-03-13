@@ -1,16 +1,17 @@
-package model;
+package dto;
 
 import lombok.*;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class ExchangeRates {
+@AllArgsConstructor
+
+public final class ExchangeRatesDTO {
     private int id;
     private int BaseCurrencyid;
     private int targetCurrencyid;
     private BigDecimal rate;
 }
+

@@ -32,7 +32,7 @@ public class ServletCurrencies extends HttpServlet {
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final CurrenciesService currenciesService = CurrenciesService.getInstance();
-    private final CurrenciesDAO currenciesDAO = CurrenciesDAO.getInstance();
+
 
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
