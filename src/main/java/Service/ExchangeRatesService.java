@@ -28,11 +28,11 @@ public class ExchangeRatesService {
 
     public ExchangeRatesDTO findByCode(String code1) {
         ExchangeRates exchangeRates=exchangeRatesDAO.findByCode(code1);
-        return  currenciesMapper.toDTO(exchangeRates);
+        return  currenciesMapper.toExchangeRatesDTO(exchangeRates);
     }
 
     public void save(UserAddExchangeRateDTO userAddExchangeRateDTO) {
-        ExchangeRates exchangeRates=currenciesMapper.toExchangeRates(userAddExchangeRateDTO);
+        ExchangeRates exchangeRates=currenciesMapper.toExchangeRatesUserAddDTO(userAddExchangeRateDTO);
         exchangeRatesDAO.save(exchangeRates);
     }
 

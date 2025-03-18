@@ -16,12 +16,11 @@ public interface CurrenciesMapper {
 
     CurrenciesMapper INSTANCE= Mappers.getMapper(CurrenciesMapper.class);
 
-    CurrenciesDTO toDTO(Currencies currency);
-    ExchangeRatesDTO toDTO(ExchangeRates currency);
+    CurrenciesDTO toCurrenciesDTO(Currencies currency);
+    ExchangeRatesDTO toExchangeRatesDTO(ExchangeRates currency);
     List<CurrenciesDTO> currenciesDTOList(List<Currencies> currencies);
-    ExchangeRates toExchangeRates(UserAddExchangeRateDTO userAddExchangeRateDTO);
+    ExchangeRates toExchangeRatesUserAddDTO(UserAddExchangeRateDTO userAddExchangeRateDTO);
     ExchangeRates toExchangeRates(ExchangeRatesDTO userAddExchangeRateDTO);
-
 
     List<ExchangeRatesDTO> exchangeDTOList(List<ExchangeRates> exchangeRates);
 }

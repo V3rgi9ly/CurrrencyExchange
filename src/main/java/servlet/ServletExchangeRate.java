@@ -27,7 +27,7 @@ import java.util.List;
 public class ServletExchangeRate extends HttpServlet {
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private final ExchangeRatesService exchangeRatesService=ExchangeRatesService.getInstance();
+    private final ExchangeRatesService exchangeRatesService = ExchangeRatesService.getInstance();
 
 
     @Override
@@ -36,8 +36,7 @@ public class ServletExchangeRate extends HttpServlet {
         String method = req.getMethod();
         if (method.equals("PATCH")) {
             this.doPatch(req, resp);
-        }
-        else {
+        } else {
             super.service(req, resp);
         }
     }
@@ -45,13 +44,13 @@ public class ServletExchangeRate extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String[] requestURI = req.getPathInfo().split("/");
-        String code=requestURI[1];
-        if (code.length()<=5  ||  code.length()>6) {
+        String code = requestURI[1];
+        if (code.length() <= 5 || code.length() > 6) {
             throw new ServletException("Invalid request path");
         }
         PrintWriter out = resp.getWriter();
-        ExchangeRatesDTO exchangeRatesDTO=ExchangeRatesService.getInstance().findByCode(code);
-        if (exchangeRatesDTO==null) {
+        ExchangeRatesDTO exchangeRatesDTO = ExchangeRatesService.getInstance().findByCode(code);
+        if (exchangeRatesDTO == null) {
             throw new ServletException("Invalid request path");
         }
 
@@ -65,34 +64,40 @@ public class ServletExchangeRate extends HttpServlet {
 
 
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String[] requestURI = req.getPathInfo().split("/");
-        String code=requestURI[1];
-        BigDecimal rate=new BigDecimal(req.getParameter("rate"));
 
-        if (code.length()<=5  ||  code.length()>6) {
-            throw new ServletException("Invalid request path");
-        }
+        try {
+            String[] requestURI = req.getPathInfo().split("/");
+            String code = requestURI[1];
+            String parameter = req.getParameter("rate");
+            BigDecimal rate = BigDecimal.valueOf(Long.parseLong(parameter));
 
-        List<Object> element=new ArrayList<>();
-        element.add(String.valueOf(rate));
-        for (Object s : element) {
-            if(s==null ){
-                throw new RuntimeException("params equals null or empty");
+            if (code.length() <= 5 || code.length() > 6) {
+                throw new ServletException("Invalid request path");
             }
-        }
 
-        PrintWriter out = resp.getWriter();
-        ExchangeRatesDTO exchangeRatesDTO=exchangeRatesService.findByCode(code);
-        if (exchangeRatesDTO==null) {
-            throw new ServletException("Invalid request path");
-        }
-        exchangeRatesService.update(exchangeRatesDTO, rate);
+            List<Object> element = new ArrayList<>();
+            element.add(String.valueOf(rate));
+            for (Object s : element) {
+                if (s == null) {
+                    throw new RuntimeException("params equals null or empty");
+                }
+            }
 
-        String employeeJsonString = this.gson.toJson(exchangeRatesDTO);
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-        resp.setStatus(201);
-        out.print(employeeJsonString);
-        out.flush();
+            PrintWriter out = resp.getWriter();
+            ExchangeRatesDTO exchangeRatesDTO = exchangeRatesService.findByCode(code);
+            if (exchangeRatesDTO == null) {
+                throw new ServletException("Invalid request path");
+            }
+            exchangeRatesService.update(exchangeRatesDTO, rate);
+
+            String employeeJsonString = this.gson.toJson(exchangeRatesDTO);
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.setStatus(201);
+            out.print(employeeJsonString);
+            out.flush();
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
