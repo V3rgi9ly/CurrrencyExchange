@@ -3,7 +3,6 @@ package dao;
 import Config.DBConnect;
 import Config.DBRequestSQL;
 import dto.ExchangeRatesDTO;
-import dto.UserAddExchangeRateDTO;
 import lombok.Getter;
 import model.ExchangeRates;
 
@@ -13,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, UserAddExchangeRateDTO> {
+public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeRates> {
 
     @Getter
     private static final ExchangeRatesDAO instance=new ExchangeRatesDAO();
@@ -70,7 +69,12 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, UserAddEx
 
 
     @Override
-    public void save(UserAddExchangeRateDTO exchangeRate) {
+    public void save(ExchangeRates exchangeRate) {
         dbConnect.connection(dbRequestSQL.requestAddExchangeRate, exchangeRate );
+    }
+
+    public void update(ExchangeRates exchangeRates, BigDecimal rate) {
+        dbConnect.connection(dbRequestSQL.requestUpdateRate,exchangeRates, rate);
+
     }
 }

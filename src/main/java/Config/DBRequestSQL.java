@@ -17,6 +17,7 @@ public class DBRequestSQL {
             "JOIN Currencies ON  Currencies.id=ExchangeRate.id " +
             "where Currencies.code IN (?, ?)";
     public final String requestAddExchangeRate="INSERT INTO ExchangeRate (BaseCurrencyid, TargetCurrencyId, rate) values (?,?,?)";
+    public final String requestUpdateRate="update ExchangeRate set rate=?";
 
 
 }

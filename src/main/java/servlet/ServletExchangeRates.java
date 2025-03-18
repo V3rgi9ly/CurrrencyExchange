@@ -43,7 +43,7 @@ public class ServletExchangeRates extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int baseCurrency= Integer.parseInt(req.getParameter("BaseCurrencyid"));
         int targetCurrency= Integer.parseInt(req.getParameter("TargetCurrencyId"));
-        BigDecimal rate=BigDecimal.valueOf(Long.parseLong(req.getParameter("rate")));
+        BigDecimal rate=new BigDecimal(req.getParameter("rate"));
 
         List<Object> element=new ArrayList<>();
         element.add(baseCurrency);

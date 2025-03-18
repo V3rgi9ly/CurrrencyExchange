@@ -3,6 +3,7 @@ package Config;
 
 import dto.CurrenciesDTO;
 import dto.ExchangeRatesDTO;
+import dto.UserAddExchangeRateDTO;
 import model.ExchangeRates;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -18,6 +19,9 @@ public interface CurrenciesMapper {
     CurrenciesDTO toDTO(Currencies currency);
     ExchangeRatesDTO toDTO(ExchangeRates currency);
     List<CurrenciesDTO> currenciesDTOList(List<Currencies> currencies);
+    ExchangeRates toExchangeRates(UserAddExchangeRateDTO userAddExchangeRateDTO);
+    ExchangeRates toExchangeRates(ExchangeRatesDTO userAddExchangeRateDTO);
+
 
     List<ExchangeRatesDTO> exchangeDTOList(List<ExchangeRates> exchangeRates);
 }

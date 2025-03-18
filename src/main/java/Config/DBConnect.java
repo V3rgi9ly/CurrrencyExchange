@@ -60,17 +60,15 @@ public class DBConnect {
             PreparedStatement preparedStatement = connection.prepareStatement(requestSQL);
 
 
-            if (params instanceof ExchangeRates){
+            if (params instanceof ExchangeRates) {
                 preparedStatement.setInt(1, ((ExchangeRates) params).getBaseCurrencyid());
                 preparedStatement.setInt(2, ((ExchangeRates) params).getTargetCurrencyid());
                 preparedStatement.setBigDecimal(3, ((ExchangeRates) params).getRate());
-            }
-            else if (params instanceof Currencies){
+            } else if (params instanceof Currencies) {
                 preparedStatement.setString(1, ((Currencies) params).getCode());
                 preparedStatement.setString(2, ((Currencies) params).getFullname());
                 preparedStatement.setString(3, ((Currencies) params).getSign());
-            }
-            else {
+            } else {
                 preparedStatement.setString(1, (String) params);
             }
 

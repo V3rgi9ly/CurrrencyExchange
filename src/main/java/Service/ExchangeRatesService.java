@@ -7,6 +7,7 @@ import dto.UserAddExchangeRateDTO;
 import lombok.Getter;
 import model.ExchangeRates;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ExchangeRatesService {
@@ -31,6 +32,12 @@ public class ExchangeRatesService {
     }
 
     public void save(UserAddExchangeRateDTO userAddExchangeRateDTO) {
-        exchangeRatesDAO.save(userAddExchangeRateDTO);
+        ExchangeRates exchangeRates=currenciesMapper.toExchangeRates(userAddExchangeRateDTO);
+        exchangeRatesDAO.save(exchangeRates);
+    }
+
+    public void update(ExchangeRatesDTO exchangeRatesDTO, BigDecimal rate) {
+        ExchangeRates exchangeRates=currenciesMapper.toExchangeRates(exchangeRatesDTO);
+        exchangeRatesDAO.update(exchangeRates,rate);
     }
 }
