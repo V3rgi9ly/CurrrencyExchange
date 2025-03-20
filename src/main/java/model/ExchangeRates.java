@@ -1,6 +1,7 @@
 package model;
 
 import lombok.*;
+import org.mapstruct.Mapper;
 
 import java.math.BigDecimal;
 

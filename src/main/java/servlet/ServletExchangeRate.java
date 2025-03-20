@@ -9,11 +9,19 @@ import dto.UserAddExchangeRateDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+
+//import javax.servlet.ServletException;
+//import javax.servlet.annotation.WebServlet;
+//import javax.servlet.http.HttpServlet;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -32,10 +40,8 @@ public class ServletExchangeRate extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String method = req.getMethod();
-        if (method.equals("PATCH")) {
-            this.doPatch(req, resp);
+        if (req.getMethod().equalsIgnoreCase("PATCH")) {
+            doPatch(req, resp);
         } else {
             super.service(req, resp);
         }
@@ -68,12 +74,24 @@ public class ServletExchangeRate extends HttpServlet {
         try {
             String[] requestURI = req.getPathInfo().split("/");
             String code = requestURI[1];
-            String parameter = req.getParameter("rate");
-            BigDecimal rate = BigDecimal.valueOf(Long.parseLong(parameter));
+
+            String rate=req.getParameter("rate");
+
 
             if (code.length() <= 5 || code.length() > 6) {
                 throw new ServletException("Invalid request path");
             }
+
+
+            PrintWriter out = resp.getWriter();
+            ExchangeRatesDTO exchangeRatesDTO = exchangeRatesService.findByCode(code);
+            if (exchangeRatesDTO == null) {
+                throw new ServletException("Invalid request path");
+            }
+
+//            String parameter = req.getParameter("rate");
+            BigDecimal rates=BigDecimal.valueOf(Double.parseDouble(rate));
+//            BigDecimal rate = BigDecimal.valueOf(Long.parseLong(parameter));
 
             List<Object> element = new ArrayList<>();
             element.add(String.valueOf(rate));
@@ -83,12 +101,7 @@ public class ServletExchangeRate extends HttpServlet {
                 }
             }
 
-            PrintWriter out = resp.getWriter();
-            ExchangeRatesDTO exchangeRatesDTO = exchangeRatesService.findByCode(code);
-            if (exchangeRatesDTO == null) {
-                throw new ServletException("Invalid request path");
-            }
-            exchangeRatesService.update(exchangeRatesDTO, rate);
+            exchangeRatesService.update(exchangeRatesDTO, rates);
 
             String employeeJsonString = this.gson.toJson(exchangeRatesDTO);
             resp.setContentType("application/json");

@@ -2,10 +2,12 @@ package dto;
 
 import lombok.*;
 
-@Data
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public final  class CurrenciesDTO {
+public class CurrenciesDTO {
     private int id;
     private String code;
     private String fullname;
