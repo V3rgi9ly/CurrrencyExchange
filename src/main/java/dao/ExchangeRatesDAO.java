@@ -74,7 +74,7 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeR
     }
 
     public void update(ExchangeRates exchangeRates, BigDecimal rate) {
-        dbConnect.connection(dbRequestSQL.requestUpdateRate,exchangeRates, rate);
+        dbConnect.connection(dbRequestSQL.requestUpdateRate,rate,exchangeRates.getBaseCurrencyid(),exchangeRates.getTargetCurrencyid());
 
     }
 }

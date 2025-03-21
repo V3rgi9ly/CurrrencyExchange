@@ -1,16 +1,19 @@
 package servlet;
 
 
-import Service.ExchangeRatesService;
+import com.google.gson.JsonArray;
+import dao.ExchangeRatesDAO;
+import jakarta.servlet.ServletConfig;
+import service.ExchangeRatesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.ExchangeRatesDTO;
-import dto.UserAddExchangeRateDTO;
+import jakarta.servlet.http.Part;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,6 +30,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @NoArgsConstructor
@@ -36,15 +40,19 @@ public class ServletExchangeRate extends HttpServlet {
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final ExchangeRatesService exchangeRatesService = ExchangeRatesService.getInstance();
+    private ExchangeRatesDAO exchangeRatesDAO;
 
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        exchangeRatesDAO = (ExchangeRatesDAO) config.getServletContext().getAttribute(ExchangeRatesDAO.class.getName());
+    }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getMethod().equalsIgnoreCase("PATCH")) {
+        if (req.getMethod().equals("PATCH"))
             doPatch(req, resp);
-        } else {
+        else
             super.service(req, resp);
-        }
     }
 
     @Override
@@ -70,29 +78,23 @@ public class ServletExchangeRate extends HttpServlet {
 
 
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String e = req.getReader().readLine();
+        String[] requestURI = req.getPathInfo().split("/");
+        String code = requestURI[1];
+        String[] request = e.split("=");
+        String d = request[1];
+        PrintWriter out = resp.getWriter();
+        BigDecimal rate = BigDecimal.valueOf(Double.parseDouble(d));
+
+        if (code.length() <= 5 || code.length() > 6) {
+            throw new ServletException("Invalid request path");
+        }
 
         try {
-            String[] requestURI = req.getPathInfo().split("/");
-            String code = requestURI[1];
-
-            String rate=req.getParameter("rate");
-
-
-            if (code.length() <= 5 || code.length() > 6) {
-                throw new ServletException("Invalid request path");
-            }
-
-
-            PrintWriter out = resp.getWriter();
             ExchangeRatesDTO exchangeRatesDTO = exchangeRatesService.findByCode(code);
             if (exchangeRatesDTO == null) {
                 throw new ServletException("Invalid request path");
             }
-
-//            String parameter = req.getParameter("rate");
-            BigDecimal rates=BigDecimal.valueOf(Double.parseDouble(rate));
-//            BigDecimal rate = BigDecimal.valueOf(Long.parseLong(parameter));
-
             List<Object> element = new ArrayList<>();
             element.add(String.valueOf(rate));
             for (Object s : element) {
@@ -101,16 +103,21 @@ public class ServletExchangeRate extends HttpServlet {
                 }
             }
 
-            exchangeRatesService.update(exchangeRatesDTO, rates);
-
-            String employeeJsonString = this.gson.toJson(exchangeRatesDTO);
+            exchangeRatesService.update(exchangeRatesDTO, rate);
+            ExchangeRatesDTO exchangeRates = exchangeRatesService.findByCode(code);
+            String employeeJsonString = this.gson.toJson(exchangeRates);
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             resp.setStatus(201);
             out.print(employeeJsonString);
             out.flush();
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            out.close();
+
+        } catch (RuntimeException a) {
+            throw new RuntimeException(a);
         }
+
+
+
     }
 }

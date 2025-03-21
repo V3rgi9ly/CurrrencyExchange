@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 
-import Service.CurrenciesService;
+import service.CurrenciesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.CurrenciesDTO;

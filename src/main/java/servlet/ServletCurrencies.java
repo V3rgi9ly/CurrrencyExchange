@@ -2,7 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,19 +14,12 @@ import jakarta.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServlet;
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
-import java.util.Optional;
 
-import Service.CurrenciesService;
+import service.CurrenciesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.CurrenciesDAO;
 import dto.CurrenciesDTO;
 import dto.UserAddCurrencyDTO;
 import lombok.AllArgsConstructor;

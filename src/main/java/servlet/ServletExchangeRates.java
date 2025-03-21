@@ -1,10 +1,9 @@
 package servlet;
 
-import Service.ExchangeRatesService;
+import service.ExchangeRatesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.ExchangeRatesDTO;
-import dto.UserAddCurrencyDTO;
 import dto.UserAddExchangeRateDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,10 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServlet;
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
