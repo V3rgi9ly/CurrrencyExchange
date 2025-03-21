@@ -104,8 +104,7 @@ public class ServletExchangeRate extends HttpServlet {
             }
 
             exchangeRatesService.update(exchangeRatesDTO, rate);
-            ExchangeRatesDTO exchangeRates = exchangeRatesService.findByCode(code);
-            String employeeJsonString = this.gson.toJson(exchangeRates);
+            String employeeJsonString = this.gson.toJson(exchangeRatesService.findByCode(code));
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             resp.setStatus(201);
