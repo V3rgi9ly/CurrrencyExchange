@@ -15,7 +15,7 @@ import java.util.List;
 public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeRates> {
 
     @Getter
-    private static final ExchangeRatesDAO instance=new ExchangeRatesDAO();
+    private static final ExchangeRatesDAO instance = new ExchangeRatesDAO();
 
     private final DBConnect dbConnect;
     private final DBRequestSQL dbRequestSQL;
@@ -49,10 +49,10 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeR
     @Override
     public ExchangeRates findByCode(String code) {
         try {
-            String part1=code.substring(0,3);
-            String part2=code.substring(3);
-            ResultSet resultSet=dbConnect.connection(dbRequestSQL.requestGetExchangeRate, part1.toUpperCase(), part2.toUpperCase() );
-            ExchangeRates exchangeRate=new ExchangeRates();
+            String part1 = code.substring(0, 3);
+            String part2 = code.substring(3);
+            ResultSet resultSet = dbConnect.connection(dbRequestSQL.requestGetExchangeRate, part1.toUpperCase(), part2.toUpperCase());
+            ExchangeRates exchangeRate = new ExchangeRates();
 
             while (resultSet.next()) {
                 exchangeRate.setId(resultSet.getInt("id"));
@@ -62,7 +62,7 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeR
             }
             return exchangeRate;
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -70,11 +70,15 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeR
 
     @Override
     public void save(ExchangeRates exchangeRate) {
-        dbConnect.connection(dbRequestSQL.requestAddExchangeRate, exchangeRate );
+        dbConnect.connection(dbRequestSQL.requestAddExchangeRate, exchangeRate);
     }
 
     public void update(ExchangeRates exchangeRates, BigDecimal rate) {
-        dbConnect.connection(dbRequestSQL.requestUpdateRate,rate,exchangeRates.getBaseCurrencyid(),exchangeRates.getTargetCurrencyid());
+        dbConnect.connection(dbRequestSQL.requestUpdateRate, rate, exchangeRates.getBaseCurrencyid(), exchangeRates.getTargetCurrencyid());
+    }
 
+    public ExchangeRates getCurrencyPairDireclty(String from, String to) {
+        ExchangeRates exchangeRate = (ExchangeRates) dbConnect.connection(dbRequestSQL.requestUpdateRate, from, to);
+        return exchangeRate;
     }
 }

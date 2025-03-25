@@ -76,7 +76,6 @@ public class ServletExchangeRate extends HttpServlet {
 
     }
 
-
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String e = req.getReader().readLine();
         String[] requestURI = req.getPathInfo().split("/");
