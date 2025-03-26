@@ -86,4 +86,9 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeR
         CurrenciesExchange exchangeRate = (CurrenciesExchange) dbConnect.connection(dbRequestSQL.getReverseExchangeRate, from, to);
         return exchangeRate;
     }
+
+    public CurrenciesExchange getExchangeRateFromCurrencyPairs(ExchangeRates exchangeRates, ExchangeRates reverseExchangeRates) {
+        CurrenciesExchange exchangeRate = (CurrenciesExchange) dbConnect.connection(dbRequestSQL.getExchangeRateFromCurrencyPairs,exchangeRates,reverseExchangeRates);
+        return exchangeRate;
+    }
 }

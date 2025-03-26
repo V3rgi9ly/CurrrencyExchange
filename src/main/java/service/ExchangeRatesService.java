@@ -62,8 +62,9 @@ public class ExchangeRatesService {
         else {
             ExchangeRates exchangeRates=exchangeRatesDAO.findByCode(from);
             ExchangeRates exchangeRates2=exchangeRatesDAO.findByCode(to);
+            CurrenciesExchange exchange=exchangeRatesDAO.getExchangeRateFromCurrencyPairs(exchangeRates,exchangeRates2);
+            return currenciesMapper.toCurrenciesExchange(exchange);
         }
 
-        return null;
     }
 }
