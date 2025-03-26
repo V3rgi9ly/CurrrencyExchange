@@ -1,12 +1,14 @@
 package service;
 
 import dto.CurrenciesDTO;
+import dto.CurrenciesExchangeDTO;
 import mapper.CurrenciesMapper;
 import dao.ExchangeRatesDAO;
 import dto.ExchangeRatesDTO;
 import dto.UserAddExchangeRateDTO;
 import lombok.Getter;
 import model.Currencies;
+import model.CurrenciesExchange;
 import model.ExchangeRates;
 
 import java.math.BigDecimal;
@@ -44,21 +46,24 @@ public class ExchangeRatesService {
         exchangeRatesDAO.update(exchangeRates,rate);
     }
 
-    public ExchangeRatesDTO getCurrencyPairDireclty(String from, String to, int amount) {
+    public CurrenciesExchangeDTO getCurrencyPairDireclty(String from, String to, int amount) {
         CurrenciesDTO currenciesDTO=currenciesService.findByCode(from);
         CurrenciesDTO currenciesDTO2=currenciesService.findByCode(to);
 
         if ((findByCode(from).getId()==(currenciesDTO.getId())) && (findByCode(to).getId()==(currenciesDTO2.getId()))) {
-            ExchangeRates exchangeRates=exchangeRatesDAO.getCurrencyPairDireclty(from,to);
-            return currenciesMapper.toExchangeRatesDTO(exchangeRates);
+            CurrenciesExchange exchangeRates=exchangeRatesDAO.getCurrencyPairDireclty(from,to);
+            return currenciesMapper.toCurrenciesExchange(exchangeRates);
         }
         else if ((findByCode(to).getId()==(currenciesDTO.getId())) && (findByCode(from).getId()==(currenciesDTO2.getId()))) {
-            ExchangeRates exchangeRates=exchangeRatesDAO.getCurrencyPairDireclty(from,to);
-            return currenciesMapper.toExchangeRatesDTO(exchangeRates);
+            CurrenciesExchange exchangeRates=exchangeRatesDAO.getReverseExchangeRate(from,to);
+
+            return currenciesMapper.toCurrenciesExchange(exchangeRates);
         }
         else {
             ExchangeRates exchangeRates=exchangeRatesDAO.findByCode(from);
             ExchangeRates exchangeRates2=exchangeRatesDAO.findByCode(to);
         }
+
+        return null;
     }
 }

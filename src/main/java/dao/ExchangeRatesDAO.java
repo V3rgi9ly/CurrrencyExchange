@@ -2,8 +2,8 @@ package dao;
 
 import Config.DBConnect;
 import Config.DBRequestSQL;
-import dto.ExchangeRatesDTO;
 import lombok.Getter;
+import model.CurrenciesExchange;
 import model.ExchangeRates;
 
 import java.math.BigDecimal;
@@ -77,8 +77,13 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeR
         dbConnect.connection(dbRequestSQL.requestUpdateRate, rate, exchangeRates.getBaseCurrencyid(), exchangeRates.getTargetCurrencyid());
     }
 
-    public ExchangeRates getCurrencyPairDireclty(String from, String to) {
-        ExchangeRates exchangeRate = (ExchangeRates) dbConnect.connection(dbRequestSQL.requestUpdateRate, from, to);
+    public CurrenciesExchange getCurrencyPairDireclty(String from, String to) {
+        CurrenciesExchange exchangeRate = (CurrenciesExchange) dbConnect.connection(dbRequestSQL.getDirectExchangeRate, from, to);
+        return exchangeRate;
+    }
+
+    public CurrenciesExchange getReverseExchangeRate(String from, String to) {
+        CurrenciesExchange exchangeRate = (CurrenciesExchange) dbConnect.connection(dbRequestSQL.getReverseExchangeRate, from, to);
         return exchangeRate;
     }
 }
