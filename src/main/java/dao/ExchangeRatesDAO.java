@@ -54,12 +54,18 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeR
             ResultSet resultSet = dbConnect.connection(dbRequestSQL.requestGetExchangeRate, part1.toUpperCase(), part2.toUpperCase());
             ExchangeRates exchangeRate = new ExchangeRates();
 
-            while (resultSet.next()) {
-                exchangeRate.setId(resultSet.getInt("id"));
-                exchangeRate.setBaseCurrencyid(resultSet.getInt("BaseCurrencyid"));
-                exchangeRate.setTargetCurrencyid(resultSet.getInt("TargetCurrencyid"));
-                exchangeRate.setRate(resultSet.getBigDecimal("rate"));
+            if (resultSet==null){
+                return null;
             }
+            else {
+                while (resultSet.next()) {
+                    exchangeRate.setId(resultSet.getInt("id"));
+                    exchangeRate.setBaseCurrencyid(resultSet.getInt("BaseCurrencyid"));
+                    exchangeRate.setTargetCurrencyid(resultSet.getInt("TargetCurrencyid"));
+                    exchangeRate.setRate(resultSet.getBigDecimal("rate"));
+                }
+            }
+
             return exchangeRate;
 
         } catch (SQLException e) {
@@ -77,18 +83,4 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeR
         dbConnect.connection(dbRequestSQL.requestUpdateRate, rate, exchangeRates.getBaseCurrencyid(), exchangeRates.getTargetCurrencyid());
     }
 
-    public CurrenciesExchange getCurrencyPairDireclty(String from, String to) {
-        CurrenciesExchange exchangeRate = (CurrenciesExchange) dbConnect.connection(dbRequestSQL.getDirectExchangeRate, from, to);
-        return exchangeRate;
-    }
-
-    public CurrenciesExchange getReverseExchangeRate(String from, String to) {
-        CurrenciesExchange exchangeRate = (CurrenciesExchange) dbConnect.connection(dbRequestSQL.getReverseExchangeRate, from, to);
-        return exchangeRate;
-    }
-
-    public CurrenciesExchange getExchangeRateFromCurrencyPairs(ExchangeRates exchangeRates, ExchangeRates reverseExchangeRates) {
-        CurrenciesExchange exchangeRate = (CurrenciesExchange) dbConnect.connection(dbRequestSQL.getExchangeRateFromCurrencyPairs,exchangeRates,reverseExchangeRates);
-        return exchangeRate;
-    }
 }

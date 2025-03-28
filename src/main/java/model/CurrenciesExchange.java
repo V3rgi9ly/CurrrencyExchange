@@ -1,9 +1,7 @@
 package model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -13,7 +11,7 @@ import java.math.BigDecimal;
 public class CurrenciesExchange {
 
     private int BaseCurrencyid;
-    private int TargetCurrencyid;
+    private int targetCurrencyid;
     private BigDecimal rate;
     private BigDecimal amount;
     private BigDecimal convertedAmount;

@@ -26,5 +26,7 @@ public interface CurrenciesMapper {
     ExchangeRates toExchangeRates(ExchangeRatesDTO userAddExchangeRateDTO);
     CurrenciesExchangeDTO toCurrenciesExchange(CurrenciesExchange currenciesExchange);
 
+
+
     List<ExchangeRatesDTO> exchangeDTOList(List<ExchangeRates> exchangeRates);
 }

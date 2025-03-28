@@ -46,25 +46,42 @@ public class ExchangeRatesService {
         exchangeRatesDAO.update(exchangeRates,rate);
     }
 
-    public CurrenciesExchangeDTO getCurrencyPairDireclty(String from, String to, int amount) {
-        CurrenciesDTO currenciesDTO=currenciesService.findByCode(from);
-        CurrenciesDTO currenciesDTO2=currenciesService.findByCode(to);
+    public CurrenciesExchangeDTO getCurrencyPairDireclty(String from, String to, BigDecimal amount) {
 
-        if ((findByCode(from).getId()==(currenciesDTO.getId())) && (findByCode(to).getId()==(currenciesDTO2.getId()))) {
-            CurrenciesExchange exchangeRates=exchangeRatesDAO.getCurrencyPairDireclty(from,to);
-            return currenciesMapper.toCurrenciesExchange(exchangeRates);
+        if (exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode(from+to))){
+            ExchangeRates exchangeRates=exchangeRatesDAO.findByCode(from+to);
+            CurrenciesExchange currenciesExchange=new CurrenciesExchange();
+            currenciesExchange.setBaseCurrencyid(exchangeRates.getBaseCurrencyid());
+            currenciesExchange.setTargetCurrencyid(exchangeRates.getTargetCurrencyid());
+            currenciesExchange.setRate(exchangeRates.getRate());
+            currenciesExchange.setAmount(amount);
+            currenciesExchange.setConvertedAmount(amount.multiply(exchangeRates.getRate()));
+            return currenciesMapper.toCurrenciesExchange(currenciesExchange);
         }
-        else if ((findByCode(to).getId()==(currenciesDTO.getId())) && (findByCode(from).getId()==(currenciesDTO2.getId()))) {
-            CurrenciesExchange exchangeRates=exchangeRatesDAO.getReverseExchangeRate(from,to);
-
-            return currenciesMapper.toCurrenciesExchange(exchangeRates);
+        else if (findAll().contains(findByCode(to+from))) {
+            ExchangeRates exchangeRatesReverse=exchangeRatesDAO.findByCode(to+from);
+            CurrenciesExchange currenciesExchangeReverse=new CurrenciesExchange();
+            currenciesExchangeReverse.setBaseCurrencyid(exchangeRatesReverse.getTargetCurrencyid());
+            currenciesExchangeReverse.setTargetCurrencyid(exchangeRatesReverse.getBaseCurrencyid() );
+            currenciesExchangeReverse.setRate(BigDecimal.valueOf(1.0).divide(exchangeRatesReverse.getRate()));
+            currenciesExchangeReverse.setAmount(amount);
+            currenciesExchangeReverse.setConvertedAmount(amount.multiply(exchangeRatesReverse.getRate()));
+            return currenciesMapper.toCurrenciesExchange(currenciesExchangeReverse);
         }
         else {
-            ExchangeRates exchangeRates=exchangeRatesDAO.findByCode(from);
-            ExchangeRates exchangeRates2=exchangeRatesDAO.findByCode(to);
-            CurrenciesExchange exchange=exchangeRatesDAO.getExchangeRateFromCurrencyPairs(exchangeRates,exchangeRates2);
-            return currenciesMapper.toCurrenciesExchange(exchange);
-        }
+            CurrenciesExchange getExchangeRateFromCurrencyPairs=new CurrenciesExchange();
+            if (exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode("USD"+from)) && exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode("USD"+to))){
+                getExchangeRateFromCurrencyPairs.setBaseCurrencyid((exchangeRatesDAO.findByCode("USD"+from).getTargetCurrencyid()));
+                getExchangeRateFromCurrencyPairs.setTargetCurrencyid((exchangeRatesDAO.findByCode("USD"+to).getTargetCurrencyid()));
+                getExchangeRateFromCurrencyPairs.setRate((BigDecimal.valueOf(1.0).divide(exchangeRatesDAO.findByCode("USD"+from).getRate())).multiply(exchangeRatesDAO.findByCode("USD"+to).getRate()));
+                getExchangeRateFromCurrencyPairs.setAmount(amount);
+                getExchangeRateFromCurrencyPairs.setConvertedAmount(amount.multiply(getExchangeRateFromCurrencyPairs.getRate()));
+                return currenciesMapper.toCurrenciesExchange(getExchangeRateFromCurrencyPairs);
+            }
+            else {
+                throw new RuntimeException("Валюта не найдена!");
+            }
 
+        }
     }
 }
