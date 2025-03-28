@@ -54,17 +54,15 @@ public class ExchangeRatesDAO implements CrudCurrencies<ExchangeRates, ExchangeR
             ResultSet resultSet = dbConnect.connection(dbRequestSQL.requestGetExchangeRate, part1.toUpperCase(), part2.toUpperCase());
             ExchangeRates exchangeRate = new ExchangeRates();
 
-            if (resultSet==null){
-                return null;
-            }
-            else {
+
+
                 while (resultSet.next()) {
                     exchangeRate.setId(resultSet.getInt("id"));
                     exchangeRate.setBaseCurrencyid(resultSet.getInt("BaseCurrencyid"));
                     exchangeRate.setTargetCurrencyid(resultSet.getInt("TargetCurrencyid"));
                     exchangeRate.setRate(resultSet.getBigDecimal("rate"));
                 }
-            }
+
 
             return exchangeRate;
 
