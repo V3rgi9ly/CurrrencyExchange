@@ -58,22 +58,24 @@ public class ExchangeRatesService {
             currenciesExchange.setConvertedAmount(amount.multiply(exchangeRates.getRate()));
             return currenciesMapper.toCurrenciesExchange(currenciesExchange);
         }
-        else if (findAll().contains(findByCode(to+from))) {
+        else if (exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode(to+from))) {
             ExchangeRates exchangeRatesReverse=exchangeRatesDAO.findByCode(to+from);
             CurrenciesExchange currenciesExchangeReverse=new CurrenciesExchange();
             currenciesExchangeReverse.setBaseCurrencyid(exchangeRatesReverse.getTargetCurrencyid());
             currenciesExchangeReverse.setTargetCurrencyid(exchangeRatesReverse.getBaseCurrencyid() );
-            currenciesExchangeReverse.setRate(BigDecimal.valueOf(1.0).divide(exchangeRatesReverse.getRate()));
+            currenciesExchangeReverse.setRate(BigDecimal.valueOf(1.0).divide(exchangeRatesReverse.getRate(),2,BigDecimal.ROUND_HALF_UP));
             currenciesExchangeReverse.setAmount(amount);
             currenciesExchangeReverse.setConvertedAmount(amount.multiply(exchangeRatesReverse.getRate()));
             return currenciesMapper.toCurrenciesExchange(currenciesExchangeReverse);
         }
         else {
             CurrenciesExchange getExchangeRateFromCurrencyPairs=new CurrenciesExchange();
-            if (exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode("USD"+from)) && exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode("USD"+to))){
+            String currency1="USD"+from;
+            String currency2="USD"+to;
+            if ((exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode(currency1))) && (exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode(currency2)))){
                 getExchangeRateFromCurrencyPairs.setBaseCurrencyid((exchangeRatesDAO.findByCode("USD"+from).getTargetCurrencyid()));
                 getExchangeRateFromCurrencyPairs.setTargetCurrencyid((exchangeRatesDAO.findByCode("USD"+to).getTargetCurrencyid()));
-                getExchangeRateFromCurrencyPairs.setRate((BigDecimal.valueOf(1.0).divide(exchangeRatesDAO.findByCode("USD"+from).getRate())).multiply(exchangeRatesDAO.findByCode("USD"+to).getRate()));
+                getExchangeRateFromCurrencyPairs.setRate((BigDecimal.valueOf(1.0).divide(exchangeRatesDAO.findByCode("USD"+from).getRate(),2,BigDecimal.ROUND_HALF_UP)).multiply(exchangeRatesDAO.findByCode("USD"+to).getRate()));
                 getExchangeRateFromCurrencyPairs.setAmount(amount);
                 getExchangeRateFromCurrencyPairs.setConvertedAmount(amount.multiply(getExchangeRateFromCurrencyPairs.getRate()));
                 return currenciesMapper.toCurrenciesExchange(getExchangeRateFromCurrencyPairs);
