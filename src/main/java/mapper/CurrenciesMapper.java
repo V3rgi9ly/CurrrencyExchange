@@ -20,13 +20,13 @@ public interface CurrenciesMapper {
 
 
     CurrenciesDTO toCurrenciesDTO(Currencies currency);
-    ExchangeRatesDTO toExchangeRatesDTO(ExchangeRates currency);
+//    ExchangeRatesDTO toExchangeRatesDTO(ExchangeRates currency);
     List<CurrenciesDTO> currenciesDTOList(List<Currencies> currencies);
-    ExchangeRates toExchangeRatesUserAddDTO(UserAddExchangeRateDTO userAddExchangeRateDTO);
-    ExchangeRates toExchangeRates(ExchangeRatesDTO userAddExchangeRateDTO);
+//    ExchangeRates toExchangeRatesUserAddDTO(UserAddExchangeRateDTO userAddExchangeRateDTO);
+//    ExchangeRates toExchangeRates(ExchangeRatesDTO userAddExchangeRateDTO);
     CurrenciesExchangeDTO toCurrenciesExchange(CurrenciesExchange currenciesExchange);
 
 
 
-    List<ExchangeRatesDTO> exchangeDTOList(List<ExchangeRates> exchangeRates);
+//    List<ExchangeRatesDTO> exchangeDTOList(List<ExchangeRates> exchangeRates);
 }

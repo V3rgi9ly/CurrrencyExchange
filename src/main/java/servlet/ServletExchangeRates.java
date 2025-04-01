@@ -1,5 +1,6 @@
 package servlet;
 
+import service.CurrenciesService;
 import service.ExchangeRatesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,6 +33,7 @@ public class ServletExchangeRates extends HttpServlet {
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final ExchangeRatesService exchangeRatesService=ExchangeRatesService.getInstance();
+    private final CurrenciesService currenciesService=CurrenciesService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -45,8 +47,8 @@ public class ServletExchangeRates extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int baseCurrency= Integer.parseInt(req.getParameter("BaseCurrencyid"));
-        int targetCurrency= Integer.parseInt(req.getParameter("TargetCurrencyId"));
+        String baseCurrency= req.getParameter("BaseCurrencyid");
+        String targetCurrency= req.getParameter("TargetCurrencyId");
         BigDecimal rate=new BigDecimal(req.getParameter("rate"));
 
         List<Object> element=new ArrayList<>();
@@ -61,7 +63,11 @@ public class ServletExchangeRates extends HttpServlet {
 
         PrintWriter out = resp.getWriter();
 
-        UserAddExchangeRateDTO exchangeRatesDTO = new UserAddExchangeRateDTO(baseCurrency, targetCurrency, rate);
+        if (currenciesService.findByCode(baseCurrency)==null || currenciesService.findByCode(targetCurrency)==null) {
+            throw new RuntimeException("currency not found");
+        }
+
+        UserAddExchangeRateDTO exchangeRatesDTO = new UserAddExchangeRateDTO(currenciesService.findByCode(baseCurrency), currenciesService.findByCode(targetCurrency), rate);
         exchangeRatesService.save(exchangeRatesDTO);
         String employeeJsonString = this.gson.toJson(exchangeRatesDTO);
         resp.setContentType("application/json");

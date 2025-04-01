@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public  class UserAddExchangeRateDTO {
-    private int BaseCurrencyid;
-    private int targetCurrencyid;
+    private CurrenciesDTO BaseCurrencyid;
+    private CurrenciesDTO targetCurrencyid;
     private BigDecimal rate;
 
 }

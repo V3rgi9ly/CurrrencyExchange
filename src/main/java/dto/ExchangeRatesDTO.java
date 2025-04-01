@@ -1,6 +1,7 @@
 package dto;
 
 import lombok.*;
+import model.Currencies;
 
 import java.math.BigDecimal;
 
@@ -11,8 +12,8 @@ import java.math.BigDecimal;
 
 public class ExchangeRatesDTO {
     private int id;
-    private int BaseCurrencyid;
-    private int targetCurrencyid;
+    private CurrenciesDTO BaseCurrencyid;
+    private CurrenciesDTO targetCurrencyid;
     private BigDecimal rate;
 
 
