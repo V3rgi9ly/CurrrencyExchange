@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class CurrenciesExchangeDTO {
 
-    private int BaseCurrencyid;
-    private int targetCurrencyid;
+    private CurrenciesDTO BaseCurrencyid;
+    private CurrenciesDTO targetCurrencyid;
     private BigDecimal rate;
     private BigDecimal amount;
     private BigDecimal convertedAmount;

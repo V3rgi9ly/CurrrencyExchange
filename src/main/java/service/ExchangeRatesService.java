@@ -76,7 +76,7 @@ public class ExchangeRatesService {
     }
 
     public CurrenciesExchangeDTO getCurrencyPairDireclty(String from, String to, BigDecimal amount) {
-
+        CurrenciesExchangeDTO currenciesExchangeDTO = new CurrenciesExchangeDTO();
         if (exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode(from + to))) {
             ExchangeRates exchangeRates = exchangeRatesDAO.findByCode(from + to);
             CurrenciesExchange currenciesExchange = new CurrenciesExchange();
@@ -85,7 +85,14 @@ public class ExchangeRatesService {
             currenciesExchange.setRate(exchangeRates.getRate());
             currenciesExchange.setAmount(amount);
             currenciesExchange.setConvertedAmount(amount.multiply(exchangeRates.getRate()));
-            return currenciesMapper.toCurrenciesExchange(currenciesExchange);
+
+
+            currenciesExchangeDTO.setBaseCurrencyid(currenciesService.findByCode(from));
+            currenciesExchangeDTO.setTargetCurrencyid(currenciesService.findByCode(to));
+            currenciesExchangeDTO.setRate(exchangeRates.getRate());
+            currenciesExchangeDTO.setAmount(currenciesExchange.getAmount());
+            currenciesExchangeDTO.setConvertedAmount(currenciesExchange.getConvertedAmount());
+            return currenciesExchangeDTO;
         } else if (exchangeRatesDAO.findAll().contains(exchangeRatesDAO.findByCode(to + from))) {
             ExchangeRates exchangeRatesReverse = exchangeRatesDAO.findByCode(to + from);
             CurrenciesExchange currenciesExchangeReverse = new CurrenciesExchange();
@@ -94,7 +101,14 @@ public class ExchangeRatesService {
             currenciesExchangeReverse.setRate(BigDecimal.valueOf(1.0).divide(exchangeRatesReverse.getRate(), 2, BigDecimal.ROUND_HALF_UP));
             currenciesExchangeReverse.setAmount(amount);
             currenciesExchangeReverse.setConvertedAmount(amount.multiply(exchangeRatesReverse.getRate()));
-            return currenciesMapper.toCurrenciesExchange(currenciesExchangeReverse);
+
+            currenciesExchangeDTO.setBaseCurrencyid(currenciesService.findByCode(to));
+            currenciesExchangeDTO.setTargetCurrencyid(currenciesService.findByCode(from));
+            currenciesExchangeDTO.setRate(currenciesExchangeReverse.getRate());
+            currenciesExchangeDTO.setAmount(currenciesExchangeReverse.getAmount());
+            currenciesExchangeDTO.setConvertedAmount(currenciesExchangeReverse.getConvertedAmount());
+            return currenciesExchangeDTO;
+
         } else {
             CurrenciesExchange getExchangeRateFromCurrencyPairs = new CurrenciesExchange();
             String currency1 = "USD" + from;
@@ -105,7 +119,14 @@ public class ExchangeRatesService {
                 getExchangeRateFromCurrencyPairs.setRate((BigDecimal.valueOf(1.0).divide(exchangeRatesDAO.findByCode("USD" + from).getRate(), 2, BigDecimal.ROUND_HALF_UP)).multiply(exchangeRatesDAO.findByCode("USD" + to).getRate()));
                 getExchangeRateFromCurrencyPairs.setAmount(amount);
                 getExchangeRateFromCurrencyPairs.setConvertedAmount(amount.multiply(getExchangeRateFromCurrencyPairs.getRate()));
-                return currenciesMapper.toCurrenciesExchange(getExchangeRateFromCurrencyPairs);
+
+                currenciesExchangeDTO.setBaseCurrencyid(currenciesService.findByCode(from));
+                currenciesExchangeDTO.setTargetCurrencyid(currenciesService.findByCode(to));
+                currenciesExchangeDTO.setRate(getExchangeRateFromCurrencyPairs.getRate());
+                currenciesExchangeDTO.setAmount(getExchangeRateFromCurrencyPairs.getAmount());
+                currenciesExchangeDTO.setConvertedAmount(getExchangeRateFromCurrencyPairs.getConvertedAmount());
+
+                return currenciesExchangeDTO;
             } else {
                 throw new RuntimeException("Валюта не найдена!");
             }
