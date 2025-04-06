@@ -2,16 +2,12 @@ package Config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class OutputJsonFormat <T> {
+public class OutputJsonFormat  {
 
 
     private String message;
@@ -41,7 +37,7 @@ public class OutputJsonFormat <T> {
 
     }
 
-    public void setMessageResult(HttpServletResponse response, T message) {
+    public void setMessageResult(HttpServletResponse response, Object message) {
 
         try {
             PrintWriter out = response.getWriter();

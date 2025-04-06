@@ -20,7 +20,7 @@ import java.util.List;
 @WebServlet("/exchangeRate/*")
 public class ServletExchangeRate extends HttpServlet {
 
-    private final ExchangeRatesService exchangeRatesService = ExchangeRatesService.getInstance();
+    private final ExchangeRatesService exchangeRatesService = new ExchangeRatesService();
     private final OutputJsonFormat outputJsonFormat = new OutputJsonFormat();
 
     @Override
@@ -38,18 +38,19 @@ public class ServletExchangeRate extends HttpServlet {
 
         try {
             if (code.length() <= 5 || code.length() > 6) {
-                outputJsonFormat.setMessageError(resp, "Invalid request path");
                 resp.setStatus(400);
-            }
-
-            ExchangeRatesDTO exchangeRatesDTO = ExchangeRatesService.getInstance().findByCode(code);
-            if (exchangeRatesDTO == null) {
                 outputJsonFormat.setMessageError(resp, "Invalid request path");
-                resp.setStatus(404);
             }
 
-            outputJsonFormat.setMessageResult(resp, exchangeRatesDTO);
-            resp.setStatus(200);
+            ExchangeRatesDTO exchangeRatesDTO = exchangeRatesService.findByCode(code);
+            if (exchangeRatesDTO.getId() == 0) {
+                resp.setStatus(404);
+                outputJsonFormat.setMessageError(resp, "Invalid request path");
+            }else {
+                outputJsonFormat.setMessageResult(resp, exchangeRatesDTO);
+                resp.setStatus(200);
+            }
+
         } catch (RuntimeException e) {
             outputJsonFormat.setMessageError(resp, "Error: " + e.getMessage());
             resp.setStatus(500);
@@ -68,26 +69,27 @@ public class ServletExchangeRate extends HttpServlet {
             BigDecimal rate = BigDecimal.valueOf(Double.parseDouble(d));
 
             if (code.length() <= 5 || code.length() > 6) {
-                outputJsonFormat.setMessageError(resp, "Invalid request path");
                 resp.setStatus(400);
+                outputJsonFormat.setMessageError(resp, "Invalid request path");
+
             }
 
             ExchangeRatesDTO exchangeRatesDTO = exchangeRatesService.findByCode(code);
             if (exchangeRatesDTO == null) {
-                outputJsonFormat.setMessageError(resp, "the currency from the currency pair does not exist");
                 resp.setStatus(404);
+                outputJsonFormat.setMessageError(resp, "the currency from the currency pair does not exist");
+
             }
             List<Object> element = new ArrayList<>();
             element.add(String.valueOf(rate));
             for (Object s : element) {
                 if (s == null) {
-                    outputJsonFormat.setMessageError(resp, "params equals null or empty");
                     resp.setStatus(400);
+                    outputJsonFormat.setMessageError(resp, "params equals null or empty");
                 }
             }
 
             exchangeRatesService.update(exchangeRatesDTO, rate);
-
             outputJsonFormat.setMessageResult(resp, exchangeRatesService.findByCode(code));
             resp.setStatus(201);
 

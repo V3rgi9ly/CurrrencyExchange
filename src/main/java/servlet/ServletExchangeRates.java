@@ -19,8 +19,8 @@ import java.util.List;
 @WebServlet("/exchangeRate")
 public class ServletExchangeRates extends HttpServlet {
 
-    private final ExchangeRatesService exchangeRatesService = ExchangeRatesService.getInstance();
-    private final CurrenciesService currenciesService = CurrenciesService.getInstance();
+    private final ExchangeRatesService exchangeRatesService = new ExchangeRatesService();
+    private final CurrenciesService currenciesService = new CurrenciesService();
     private final OutputJsonFormat outputJsonFormat = new OutputJsonFormat();
 
 
@@ -38,6 +38,7 @@ public class ServletExchangeRates extends HttpServlet {
 
     }
 
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String baseCurrency = req.getParameter("BaseCurrencyid");
         String targetCurrency = req.getParameter("TargetCurrencyId");
@@ -50,25 +51,26 @@ public class ServletExchangeRates extends HttpServlet {
             element.add(String.valueOf(rate));
             for (Object s : element) {
                 if (s == null) {
-                    outputJsonFormat.setMessageError(resp, "params equals null or empty");
                     resp.setStatus(400);
+                    outputJsonFormat.setMessageError(resp, "params equals null or empty");
                 }
             }
 
             if (currenciesService.findByCode(baseCurrency) == null || currenciesService.findByCode(targetCurrency) == null) {
-                outputJsonFormat.setMessageError(resp, "the currency from the currency pair does not exist");
                 resp.setStatus(404);
+                outputJsonFormat.setMessageError(resp, "the currency from the currency pair does not exist");
             }
 
-            if (exchangeRatesService.findByCode(baseCurrency + targetCurrency) != null) {
-                outputJsonFormat.setMessageError(resp, "exchange already exists");
+            if (exchangeRatesService.findByCode(baseCurrency + targetCurrency).getId() != 0) {
                 resp.setStatus(409);
+                outputJsonFormat.setMessageError(resp, "exchange already exists");
+            }else {
+                UserAddExchangeRateDTO exchangeRatesDTO = new UserAddExchangeRateDTO(currenciesService.findByCode(baseCurrency), currenciesService.findByCode(targetCurrency), rate);
+                exchangeRatesService.save(exchangeRatesDTO);
+                outputJsonFormat.setMessageResult(resp, exchangeRatesDTO);
+                resp.setStatus(201);
             }
 
-            UserAddExchangeRateDTO exchangeRatesDTO = new UserAddExchangeRateDTO(currenciesService.findByCode(baseCurrency), currenciesService.findByCode(targetCurrency), rate);
-            exchangeRatesService.save(exchangeRatesDTO);
-            outputJsonFormat.setMessageResult(resp, exchangeRatesDTO);
-            resp.setStatus(201);
         } catch (RuntimeException e) {
             outputJsonFormat.setMessageError(resp, "Error: " + e.getMessage());
             resp.setStatus(500);

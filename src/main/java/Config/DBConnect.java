@@ -1,10 +1,6 @@
 package Config;
 
 import lombok.Getter;
-import model.Currencies;
-import model.ExchangeRates;
-
-import javax.swing.*;
 import java.sql.*;
 
 public class DBConnect {
@@ -15,42 +11,6 @@ public class DBConnect {
     private DBConnect() {
         this.dbBaseConfig = DBConfig.getInstance();
     }
-
-
-    public ResultSet connection(String requestSQL, String... params) {
-
-        try {
-            Class.forName("org.sqlite.JDBC");
-
-            Connection connection = DriverManager.getConnection(dbBaseConfig.databaseURI, dbBaseConfig.username, dbBaseConfig.password);
-            PreparedStatement preparedStatement = connection.prepareStatement(requestSQL);
-
-            for (int i = 0; i < params.length; i++) {
-                preparedStatement.setObject(i + 1, params[i]);
-            }
-
-            ResultSet resultSet = null;
-            if (requestSQL.trim().toUpperCase().startsWith("SELECT")
-                    || requestSQL.trim().toUpperCase().startsWith("WITH")) {
-                resultSet = preparedStatement.executeQuery();
-
-
-            } else {
-                preparedStatement.executeUpdate();
-                connection.close();
-            }
-
-            return resultSet;
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error in connection");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Error-ClassNotFound");
-        }
-
-
-    }
-
 
     public ResultSet connection(String requestSQL, Object... param) {
 

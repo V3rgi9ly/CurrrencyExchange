@@ -16,9 +16,9 @@ import java.math.BigDecimal;
 @WebServlet("/exchange")
 public class ServletExchangeRateGetDirectly extends HttpServlet {
 
-    private final ExchangeRatesService exchangeRatesService=ExchangeRatesService.getInstance();
+    private final ExchangeRatesService exchangeRatesService=new ExchangeRatesService();
     private CurrenciesExchangeDTO currenciesExchangeDTO =new CurrenciesExchangeDTO();
-    private final CurrenciesService currenciesService=CurrenciesService.getInstance();
+    private final CurrenciesService currenciesService=new CurrenciesService();
     private final OutputJsonFormat outputJsonFormat = new OutputJsonFormat();
 
 
@@ -31,8 +31,8 @@ public class ServletExchangeRateGetDirectly extends HttpServlet {
             BigDecimal amount=BigDecimal.valueOf(Double.parseDouble(req.getParameter("amount")));
 
             if (currenciesService.findByCode(from) == null || currenciesService.findByCode(to) == null) {
-                outputJsonFormat.setMessageError(resp, "the currency from the currency pair does not exist");
                 resp.setStatus(404);
+                outputJsonFormat.setMessageError(resp, "the currency from the currency pair does not exist");
             }
 
             currenciesExchangeDTO =exchangeRatesService.getCurrencyPairDireclty(from,to,amount);
