@@ -74,8 +74,5 @@ public class ServletCurrencies extends HttpServlet {
             outputJsonFormat.setMessageError(response, message);
             response.setStatus(500);
         }
-
-
-
     }
 }
