@@ -66,7 +66,7 @@
 ]
 ```
 
-### GET /currency/USD
+### GET /currencies/USD
 * Returns a specific currency. The currency code is specified in the request address.
 ```
 {
