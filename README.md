@@ -92,7 +92,7 @@
 
 ## ExchangeRates
 ***
-### GET /exchangeRates
+### GET /exchangeRate
 * Getting a list of all exchange rates
 
 ```
@@ -185,7 +185,7 @@
 }
 ```
 
-### POST /exchangeRates
+### POST /exchangeRate
 * Adding a new exchange rate to the database. The data is transferred to other sections (x-www-form-urlencoded). The norm fields are the base currency code, the target currency code, and the exchange rate
 >An example of a response is a JSON representation of a record inserted into the database, including its ID:
 ```
@@ -206,7 +206,7 @@
     "rate": 0.99
 ```
 
-### /exchangeRate/USDRUB
+### Patch /exchangeRate/USDRUB
 * Updating the existing exchange rate in the database. The currency pair is set by consecutive currency codes in the request address. The data is transmitted in the request body as form fields (x-www-form-urlencoded). The only field in the form is rate
 >The response example is a JSON representation of the updated record in the database, including its ID:
 
