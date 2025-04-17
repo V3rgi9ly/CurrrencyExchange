@@ -61,7 +61,7 @@ public class ServletExchangeRates extends HttpServlet {
                 outputJsonFormat.setMessageError(resp, "the currency from the currency pair does not exist");
             }
 
-            if (exchangeRatesService.findByCode(baseCurrency + targetCurrency).getId() != 0) {
+            if (exchangeRatesService.findCode(baseCurrency + targetCurrency)) {
                 resp.setStatus(409);
                 outputJsonFormat.setMessageError(resp, "exchange already exists");
             }else {

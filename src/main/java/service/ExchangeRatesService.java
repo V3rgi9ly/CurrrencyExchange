@@ -127,4 +127,11 @@ public class ExchangeRatesService {
 
         }
     }
+
+    public boolean findCode(String code) {
+        if (exchangeRatesDAO.findByCode(code).getId() != 0) {
+            return true;
+        }
+        return false;
+    }
 }

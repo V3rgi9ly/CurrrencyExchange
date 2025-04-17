@@ -35,7 +35,7 @@ public class CurrenciesService {
     }
 
     public boolean findCode(String code) {
-        if (currenciesDAO.findByCode(code) != null) {
+        if (currenciesDAO.findByCode(code).getId() != 0) {
             return true;
         }
        return false;
